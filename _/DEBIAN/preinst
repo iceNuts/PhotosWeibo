@@ -1,4 +1,0 @@
-#!/bin/sh
-chown mobile /var/mobile/Documents
-rm -f /var/mobile/Documents/PhotosWeibo/weibodbv2.3.sql
-exit 0;
