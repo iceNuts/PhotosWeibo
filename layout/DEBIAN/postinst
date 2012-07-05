@@ -1,0 +1,7 @@
+#!/bin/sh
+chown root:wheel /usr/bin/photosweibodaemon
+chmod 755 /usr/bin/photosweibodaemon
+chown root:wheel /Library/LaunchDaemons/com.icenuts.photosweibodaemon.plist
+chmod 644 /Library/LaunchDaemons/com.icenuts.photosweibodaemon.plist
+/bin/launchctl load -w /Library/LaunchDaemons/com.icenuts.photosweibodaemon.plist
+exit 0
