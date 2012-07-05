@@ -5,6 +5,7 @@
 #import "SendAgent.h"
 #import <sys/stat.h>
 #import <sqlite3.h>
+#import "checkAuth.h"
 
 NSDictionary *mDictionary;
 CPDistributedMessagingCenter *mCenter;
@@ -220,6 +221,7 @@ CPDistributedMessagingCenter *
 	[center registerForMessageName:@"com.icenuts.photo2weibo.query" target:self selector:@selector(handleQuery:userInfo:)];
 	[center registerForMessageName:@"com.icenuts.photo2weibo.send" target:self selector:@selector(handleMessageNamed:userInfo:)];
 	[center registerForMessageName:@"com.icenuts.photo2weibo.remnant" target:self selector:@selector(handleQuery:userInfo:)];
+	[center registerForMessageName:@"com.icenuts.share2weibo.send" target:self selector:@selector(handleMessageNamed:userInfo:)];
 	return %orig;
 }
 
@@ -292,6 +294,35 @@ CPDistributedMessagingCenter *
 		sqlService *sql = [[sqlService alloc] init];
 		[sql deleteTweetText];
 		//E: Clear Sql Content
+	}else if([name isEqualToString:@"com.icenuts.share2weibo.send"]){
+		BOOL iPad = [[[UIDevice currentDevice] model] isEqualToString: @"iPad"];
+		SendAgent *myAgent = [[SendAgent alloc] init];
+		
+		//check authorized
+		id checker = [[checkAuth alloc] init];
+		if(![checker isAuthorized]){
+			Class $SBBulletinBannerController = objc_getClass("SBBulletinBannerController");
+			Class $SBBulletinBannerItem = objc_getClass("SBBulletinBannerItem");
+			Class $BBBulletin = objc_getClass("BBBulletin");
+			id bulletin = [[$BBBulletin alloc] init];
+			id showBanner = [$SBBulletinBannerController sharedInstance];
+			[bulletin setMessage: @"请注册激活插件!"];
+			[bulletin setTitle: @"Photos Weibo"];
+			[bulletin setRecordID: @"com.apple.mobileslideshow"];
+			[bulletin setPublisherBulletinID: @"com.apple.mobileslideshow"];
+			[bulletin setSectionID: @"com.apple.mobileslideshow"];
+
+			id item = [$SBBulletinBannerItem itemWithBulletin: bulletin];
+			[showBanner _presentBannerForItem: item];
+			return;
+		}
+		if(iPad){
+			[myAgent initWithAppKey: iPadKey appSecret: iPadSecret text: [userInfo valueForKey:@"text"]  imgPath: [userInfo valueForKey:@"imgPath"]];
+		}else{
+			[myAgent initWithAppKey: AppKey appSecret: AppSecret text: [userInfo valueForKey:@"text"]  imgPath: [userInfo valueForKey:@"imgPath"]];
+		}
+		fullPath = [[userInfo valueForKey:@"imgPath"] copy];
+		[myAgent send];
 	}
 }
 
