@@ -12,4 +12,10 @@ build/*
 !default.xcworkspace
 xcuserdata
 profile
-*.moved-aside
+*.moved-asid
+*.theos
+*.DS_Store
+*.stamp
+*.o
+*./obj
+*_
