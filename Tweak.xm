@@ -420,6 +420,10 @@ BOOL isCancelTapped = NO;
 	PLManagedAsset *info = [self photo];
 	NSString *filename = [info filename];
 	NSString *directory = [info directory];
+	if(!directory){
+		%orig;
+		return;
+	}
 	NSString *path = [[@"/User/Media/" stringByAppendingString: directory] stringByAppendingString: @"/"];
 	fullPath = [[path stringByAppendingString: filename] copy];
 	NSLog(@"PATH: %@ : I am here to fetch your photo", fullPath);

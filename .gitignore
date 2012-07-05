@@ -19,3 +19,7 @@ profile
 *.o
 *./obj
 *_
+com*
+*obj
+*/theos
+*.dylib
