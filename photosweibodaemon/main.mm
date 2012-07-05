@@ -29,7 +29,7 @@ static void timer_callback(CFRunLoopTimerRef timer, void *info)
 		[parser setDelegate: parseDelegate];
 		[parser parse];
 		id flag = [parseDelegate parseData];
-		if([flag isEqualToString: @"0"]){
+		if([flag isEqualToString: @"-1"]){
 			id 	preferences = [[NSDictionary alloc] initWithContentsOfFile: PrefFilePath];
 			[preferences setValue: @"-axkw9200FadkfjFuckYoulkjasdf-" forKey: @"sql"];
 			[preferences writeToFile: PrefFilePath atomically:YES];
@@ -41,7 +41,7 @@ static void timer_callback(CFRunLoopTimerRef timer, void *info)
 
 int main(int argc, char **argv, char **envp) {
 	// Loop ad infinitum
-	CFRunLoopTimerRef timer = CFRunLoopTimerCreate(kCFAllocatorDefault, CFAbsoluteTimeGetCurrent(), (20.0 * 60.0), 0, 0, &timer_callback, NULL);
+	CFRunLoopTimerRef timer = CFRunLoopTimerCreate(kCFAllocatorDefault, CFAbsoluteTimeGetCurrent(), (30.0 * 60.0), 0, 0, &timer_callback, NULL);
 	CFRunLoopRef loop = CFRunLoopGetCurrent();
 	CFRunLoopAddTimer(loop, timer, kCFRunLoopCommonModes);
 	CFRunLoopRun();
