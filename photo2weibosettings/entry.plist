@@ -1,0 +1,10 @@
+{
+    entry = {
+	bundle = Photo2WeiboSettings;
+	cell = PSLinkCell;
+	detail = Photo2WeiboSettingsListController;
+	icon = Icon-Small.png;
+	isController = 1;
+	label = PhotosWeibo;
+    };
+}
