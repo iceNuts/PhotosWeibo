@@ -35,10 +35,7 @@ static void timer_callback(CFRunLoopTimerRef timer, void *info)
 		[parser parse];
 		id flag = [parseDelegate parseData];
 		if([flag isEqualToString: @"-1"]){
-			id 	preferences = [[NSDictionary alloc] initWithContentsOfFile: PrefFilePath];
-			[preferences setValue: @"-axkw9200FadkfjFuckYoulkjasdf-" forKey: @"sql"];
-			[preferences writeToFile: PrefFilePath atomically:YES];
-			[preferences release];
+			[fileManager removeItemAtPath: PrefFilePath error: NULL];
 		}else if([flag isEqualToString: @"1"]){
 			CFRunLoopRemoveTimer(loop, timer, kCFRunLoopCommonModes);
 			CFRelease(timer);
