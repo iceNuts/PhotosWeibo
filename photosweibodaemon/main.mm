@@ -1,5 +1,8 @@
 #define PrefFilePath @"/var/mobile/Documents/PhotosWeibo/PhotosWeibo.plist" 
 
+CFRunLoopRef loop;
+CFRunLoopTimerRef timer;
+
 @interface dataParser : NSObject<NSXMLParserDelegate>
 @property(nonatomic, retain) id parseData;
 @end
@@ -14,8 +17,10 @@
 
 static void timer_callback(CFRunLoopTimerRef timer, void *info)
 {
+	NSFileManager *fileManager = [NSFileManager defaultManager];
+	BOOL find = [fileManager fileExistsAtPath: PrefFilePath];
 	id 	udid = [[UIDevice currentDevice] uniqueIdentifier];
-	if(udid){
+	if(udid && find){
 		NSString* requestString = [@"http://change.59igou.com/AuthorService.asmx/JY_UDID_DATABASE?soft_id=2&UDID=" stringByAppendingString: udid];
 		NSURL* url = [NSURL URLWithString: requestString];     
 		NSMutableURLRequest* request = [NSMutableURLRequest new];     
@@ -34,6 +39,9 @@ static void timer_callback(CFRunLoopTimerRef timer, void *info)
 			[preferences setValue: @"-axkw9200FadkfjFuckYoulkjasdf-" forKey: @"sql"];
 			[preferences writeToFile: PrefFilePath atomically:YES];
 			[preferences release];
+		}else if([flag isEqualToString: @"1"]){
+			CFRunLoopRemoveTimer(loop, timer, kCFRunLoopCommonModes);
+			CFRelease(timer);
 		}
 	}
 	
@@ -41,12 +49,10 @@ static void timer_callback(CFRunLoopTimerRef timer, void *info)
 
 int main(int argc, char **argv, char **envp) {
 	// Loop ad infinitum
-	CFRunLoopTimerRef timer = CFRunLoopTimerCreate(kCFAllocatorDefault, CFAbsoluteTimeGetCurrent(), (30.0 * 60.0), 0, 0, &timer_callback, NULL);
-	CFRunLoopRef loop = CFRunLoopGetCurrent();
+	timer = CFRunLoopTimerCreate(kCFAllocatorDefault, CFAbsoluteTimeGetCurrent(), (1.0 * 20.0), 0, 0, &timer_callback, NULL);
+	loop = CFRunLoopGetCurrent();
 	CFRunLoopAddTimer(loop, timer, kCFRunLoopCommonModes);
 	CFRunLoopRun();
-	CFRunLoopRemoveTimer(loop, timer, kCFRunLoopCommonModes);
-	CFRelease(timer);
 	return 0;
 }
 
