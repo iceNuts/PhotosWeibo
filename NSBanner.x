@@ -316,13 +316,22 @@ CPDistributedMessagingCenter *
 			[showBanner _presentBannerForItem: item];
 			return;
 		}
-		if(iPad){
-			[myAgent initWithAppKey: iPadKey appSecret: iPadSecret text: [userInfo valueForKey:@"text"]  imgPath: [userInfo valueForKey:@"imgPath"]];
+		if([userInfo objectForKey: @"imgData"]){
+			if(iPad){
+				[myAgent initWithAppKey: iPadKey appSecret: iPadSecret text: [userInfo valueForKey:@"text"]  imgData: [userInfo valueForKey:@"imgData"]];
+			}else{
+				[myAgent initWithAppKey: AppKey appSecret: AppSecret text: [userInfo valueForKey:@"text"]  imgData: [userInfo valueForKey:@"imgData"]];
+			}
+			[myAgent sendWithData];
 		}else{
-			[myAgent initWithAppKey: AppKey appSecret: AppSecret text: [userInfo valueForKey:@"text"]  imgPath: [userInfo valueForKey:@"imgPath"]];
+			if(iPad){
+				[myAgent initWithAppKey: iPadKey appSecret: iPadSecret text: [userInfo valueForKey:@"text"]  imgPath: [userInfo valueForKey:@"imgPath"]];
+			}else{
+				[myAgent initWithAppKey: AppKey appSecret: AppSecret text: [userInfo valueForKey:@"text"]  imgPath: [userInfo valueForKey:@"imgPath"]];
+			}
+			fullPath = [[userInfo valueForKey:@"imgPath"] copy];
+			[myAgent send];
 		}
-		fullPath = [[userInfo valueForKey:@"imgPath"] copy];
-		[myAgent send];
 	}
 }
 

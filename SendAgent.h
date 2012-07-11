@@ -22,8 +22,12 @@
 @property (nonatomic, retain) id imagePath;
 @property (nonatomic, retain) id application;
 @property (nonatomic, retain) id enteredText;
+@property (nonatomic, retain) NSData *rawData;
+
 
 - (void)initWithAppKey:(NSString *)appKey appSecret:(NSString *)appSecret text:(id)mytext imgPath: (id) path;
+- (void)initWithAppKey:(NSString *)appKey appSecret:(NSString *)appSecret text:(id)mytext imgData: (id) data;
 - (void) send;
+- (void) sendWithData;
 @end
 

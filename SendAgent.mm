@@ -8,6 +8,7 @@ static UIImage* cacheImage;
 @synthesize imagePath;
 @synthesize application;
 @synthesize enteredText;
+@synthesize rawData;
 
 - (void)initWithAppKey:(NSString *)appKey appSecret:(NSString *)appSecret text:(id)mytext imgPath: (id) path{
     
@@ -18,6 +19,38 @@ static UIImage* cacheImage;
     [engine setDelegate: self];
     imagePath = [path copy];
     enteredText = [mytext copy];
+}
+
+- (void)initWithAppKey:(NSString *)appKey appSecret:(NSString *)appSecret text:(id)mytext imgData: (id) data{
+	
+	application = [UIApplication sharedApplication];
+    
+    //Parse engine
+    engine = [[WBEngine alloc] initWithAppKey: appKey appSecret: appSecret];
+    [engine setDelegate: self];
+    rawData = [[NSData alloc] initWithData: data];
+    enteredText = [mytext copy];
+}
+
+- (void)sendWithData{
+	//Background handler
+    bgTask = [application beginBackgroundTaskWithExpirationHandler: ^{
+        CPDistributedMessagingCenter *center;
+		center = [CPDistributedMessagingCenter centerNamed:@"com.icenuts.photo2weibo.bannerserver"];
+		[center sendMessageName:@"com.icenuts.photo2weibo.timeout" userInfo:nil];
+        //Avoid killing app
+        [application endBackgroundTask:bgTask];
+        bgTask = UIBackgroundTaskInvalid;        
+    }];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        UIImage *raw_image = [UIImage imageWithData: rawData];
+	
+		if([enteredText isEqualToString:@""]){
+			[engine sendWeiBoWithText: @"分享图片" image: raw_image url:nil];
+		}else{
+			[engine sendWeiBoWithText: enteredText image: raw_image url:nil];
+		}    
+	});
 }
 
 - (void) send{
