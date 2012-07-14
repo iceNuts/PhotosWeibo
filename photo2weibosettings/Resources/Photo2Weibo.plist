@@ -82,6 +82,22 @@
 			<key>cell</key>
 			<string>PSLinkCell</string>
 			<key>detail</key>
+			<string>Photo2WeiboImage</string>
+			<key>label</key>
+			<string>图片质量</string>
+		</dict>
+		<dict>
+			<key>alignment</key>
+			<integer>1</integer>
+			<key>cell</key>
+			<string>PSGroupCell</string>
+			<key>label</key>
+			<string>图片质量设置同样适用于Share2Weibo</string>
+		</dict>
+		<dict>
+			<key>cell</key>
+			<string>PSLinkCell</string>
+			<key>detail</key>
 			<string>Photo2WeiboSettingsHelp</string>
 			<key>label</key>
 			<string>帮助</string>
@@ -150,7 +166,7 @@
 			<key>cell</key>
 			<string>PSGroupCell</string>
 			<key>footerText</key>
-			<string>Photos Weibo v2.4 © 2012 _iceNuts and William.</string>
+			<string>Photos Weibo v2.5 © 2012 _iceNuts and William.</string>
 		</dict>
 	</array>
 	<key>title</key>

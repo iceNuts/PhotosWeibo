@@ -2,7 +2,7 @@ ARCHS=armv7
 include theos/makefiles/common.mk
 
 BUNDLE_NAME = Photo2WeiboSettings
-Photo2WeiboSettings_FILES = Photo2WeiboSettings.xm Photo2WeiboHelp.mm
+Photo2WeiboSettings_FILES = Photo2WeiboSettings.xm Photo2WeiboHelp.mm Photo2WeiboImage.mm
 Photo2WeiboSettings_INSTALL_PATH = /Library/PreferenceBundles
 Photo2WeiboSettings_FRAMEWORKS = UIKit MessageUI
 Photo2WeiboSettings_PRIVATE_FRAMEWORKS = Preferences AppSupport

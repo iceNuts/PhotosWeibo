@@ -1,5 +1,7 @@
 #import "SendAgent.h"
 
+#define PrefFilePath @"/var/mobile/Library/Preferences/com.icenuts.photosweibo.image.plist"
+
 static UIBackgroundTaskIdentifier bgTask;
 static UIImage* cacheImage;
 
@@ -72,16 +74,37 @@ static UIImage* cacheImage;
         CGFloat height = original.size.height;
         
         CGFloat ratio = height/width;
-        
+		
+		id Preferences = [[NSDictionary alloc] initWithContentsOfFile: PrefFilePath];
+		NSString* state;
+		int myscale = 600;
         if([[Reachability reachabilityForLocalWiFi] currentReachabilityStatus] == ReachableViaWiFi){
             NSLog(@"-----Wifi-----");
-            if(width > 800){
-                width = 800;
+			myscale = 600;
+			state = [Preferences valueForKey:@"PhotoImageWifi"];
+			if([state isEqualToString: @"low"]){
+				myscale = 600;
+			}else if([state isEqualToString: @"medium"]){
+				myscale = 900;
+			}else if([state isEqualToString: @"high"]){
+				myscale = 1400;
+			}
+            if(width > myscale){
+                width = myscale;
                 height = width*ratio;
             }
         }else{
-            if(width > 450){
-                width = 450;
+			myscale = 450;
+			state = [Preferences valueForKey:@"PhotoImageCarrier"];
+			if([state isEqualToString: @"low"]){
+				myscale = 450;
+			}else if([state isEqualToString: @"medium"]){
+				myscale = 600;
+			}else if([state isEqualToString: @"high"]){
+				myscale = 900;
+			}
+            if(width > myscale){
+                width = myscale;
                 height = width*ratio;
             }
         }
